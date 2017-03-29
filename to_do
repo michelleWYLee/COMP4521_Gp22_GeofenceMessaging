@@ -1,10 +1,15 @@
 - COMP4521 
-	connect to Github
-	Geofencing
-	Connect to server
-	Create db on server
-	Messaging
-	Alert user of nearby
-	Turn on and off interrupt by app
-	Google Map display ( with Heatmap Layer )
-	test with gps.io
+	> Connect to server & create db
+		Ref: Week 7 Lab
+	> Geofencing
+		Ref: Week 8 Lab
+	> Google Map display ( with Heatmap Layer )
+		Ref: Week 9 Lab
+		Ref: https://developers.google.com/maps/documentation/javascript/heatmaplayer
+	> Messaging
+		Ref: https://firebase.google.com/docs/cloud-messaging/android/client
+	> Alert user of nearby pinned messages
+		Ref: Week 8 Lab
+	> Turn on and off interrupt by app
+	> UI
+	> test with gps.io
