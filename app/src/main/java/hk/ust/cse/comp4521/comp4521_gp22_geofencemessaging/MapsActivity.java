@@ -1,7 +1,7 @@
 package hk.ust.cse.comp4521.comp4521_gp22_geofencemessaging;
 
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
