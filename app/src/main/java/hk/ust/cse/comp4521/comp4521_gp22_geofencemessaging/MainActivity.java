@@ -1,6 +1,5 @@
 package hk.ust.cse.comp4521.comp4521_gp22_geofencemessaging;
 
-import android.*;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
@@ -20,6 +19,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -32,14 +32,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private static final int PERMISSION_LOCATION_REQUEST_CODE = 0;
     private String TAG = "Geofence Message";
 
-    private Location mLastLocation;
+    private Location currentLocation;
     // Request code to use when launching the resolution activity
     private static final int REQUEST_RESOLVE_ERROR = 1001;
     // Unique tag for the error dialog fragment
     private static final String DIALOG_ERROR = "dialog_error";
     // Bool to track whether the app is already resolving an error
     private boolean mResolvingError = false;
-
+    private LocationRequest locationRequest;
 
 
     @Override
@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         // Build the Google API client so that connections can be established
         buildGoogleApiClient();
+        configLocationRequest();
 
         setContentView(R.layout.activity_main);
 
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
-        TabStatePagerAdapter adapter = new TabStatePagerAdapter(getSupportFragmentManager());
+        TabStatePagerAdapter adapter = new TabStatePagerAdapter(getSupportFragmentManager(),currentLocation);
 
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(1);
@@ -75,6 +76,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
+    }
+
+    protected void configLocationRequest(){
+        locationRequest = new LocationRequest();
+        //set get location time to 1s =1000ms
+        locationRequest.setInterval(1000);
+        locationRequest.setFastestInterval(1000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
+
     }
 
     @Override
@@ -132,14 +142,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
             return;
         }
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        currentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-        if (mLastLocation != null) {
-            String message = "Last Location is: " +
-                    "  Latitude = " + String.valueOf(mLastLocation.getLatitude()) +
-                    "  Longitude = " + String.valueOf(mLastLocation.getLongitude());
-            Log.i(TAG, message);
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        if (currentLocation != null) {
+            /*String message = "Last Location is: " +
+                    "  Latitude = " + String.valueOf(currentLocation.getLatitude()) +
+                    "  Longitude = " + String.valueOf(currentLocation.getLongitude());
+            Log.i(TAG, message);*/
+
+            Toast.makeText(this, "location connected", Toast.LENGTH_LONG).show();
+
+
         } else {
             Toast.makeText(this, "no service available,please try again", Toast.LENGTH_LONG).show();
         }
@@ -174,6 +187,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
 
     }
+
+
+
+
 
     // The rest of this code is all about building the error dialog
 

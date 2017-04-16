@@ -1,5 +1,6 @@
 package hk.ust.cse.comp4521.comp4521_gp22_geofencemessaging;
 
+import android.location.Location;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -9,10 +10,11 @@ public class TabStatePagerAdapter extends FragmentStatePagerAdapter {
 
     //set tab name
     private String[] titles = new String[]{"PIN", "Public", "New", "Private","Me"};
+    Location currentLocation;
 
-    public TabStatePagerAdapter(FragmentManager fm){
+    public TabStatePagerAdapter(FragmentManager fm, Location currentLocation){
         super(fm);
-
+        this.currentLocation = currentLocation;
 
     }
 
