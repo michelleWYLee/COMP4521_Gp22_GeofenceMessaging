@@ -42,7 +42,7 @@
              </intent-filter>
          </activity>
         -->
-        <activity android:name=".MainActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -50,7 +50,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".signupActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".resetPasswordActivity"></activity>
     </application>
 

@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         //get current user
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
