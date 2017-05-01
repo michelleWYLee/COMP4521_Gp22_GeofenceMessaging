@@ -1,36 +1,109 @@
 package hk.ust.cse.comp4521.comp4521_gp22_geofencemessaging;
 
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 
-public class PublicMessageFragment extends Fragment {
-    public static final String ARGS_PAGE = "args_page";
-    private int mPage;
-    private String test;
+public class PublicMessageFragment extends Fragment
+        implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener
+{
+    public static final String ARGS_longitude ="args_logitude";
+    public static final String ARGS_latitude = "args_latitude";
 
-    /*public static PublicMessageFragment newInstance(int page, String test) {
+    Location mLastLocation;
+    LocationRequest mLocationRequest;
+    GoogleApiClient mGoogleApiClient;
+
+    public static final int PERMISSIONS_REQUEST_LOCATION = 99;
+
+    //Geocoder getName = new Geocoder(getActivity(), Locale.ENGLISH);
+
+    public static PublicMessageFragment newInstance() {
         Bundle args = new Bundle();
 
         // Getting values from TabPagerAdapter.
-        // You have to set a key for using the value
-        args.putInt(ARGS_PAGE, page);
-        args.putString("ARGS_TEST", test);
+        //args.putInt(ARGS_PAGE, page);
+        //args.putString();
+//        args.putDouble(ARGS_longitude,longitude);
+//        args.putDouble(ARGS_latitude,latitude);
         PublicMessageFragment fragment = new PublicMessageFragment();
-        fragment.setArguments(args);
+//        fragment.setArguments(args);
         return fragment;
-    }*/
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        buildGoogleApiClient();
+
         // Getting values with key.
        // mPage = getArguments().getInt(ARGS_PAGE);
         //test = getArguments().getString("ARGS_TEST");
+
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        mLocationRequest = new LocationRequest();
+        //set getlocation time to 1s = 1000ms
+        mLocationRequest.setInterval(1000);
+        mLocationRequest.setFastestInterval(1000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        }
+    }
+
+
+
+    @Override
+    public void onPause(){
+        super.onPause();
+
+        //stop location updates when Activity is no longer active
+        if (mGoogleApiClient != null) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        }
+
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        mGoogleApiClient.connect();
     }
 
     @Nullable
@@ -38,9 +111,95 @@ public class PublicMessageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //smooth scroll
         View view = inflater.inflate(R.layout.fragment_public,container,false);
-       // TextView textView = (TextView) view.findViewById(R.id.item_title);
-       // textView.setText(mPage+test);
+        TextView textView = (TextView) view.findViewById(R.id.item_title);
+        //textView.setText(locationAddress);
 
         return view;
     }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        mLastLocation = location;
+        //LatLng = latitude Longitude
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+    }
+
+
+
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    private void checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                //Ask user to give permission with explanation
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Location Permission Needed")
+                        .setMessage("Hello! Please give us permission to make this app function.")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Prompt the user once explanation has been shown
+                                ActivityCompat.requestPermissions(getActivity(),
+                                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                                        PERMISSIONS_REQUEST_LOCATION );
+                            }
+                        })
+                        .create()
+                        .show();
+
+
+            } else {
+                //request the permission without explanation
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                        PERMISSIONS_REQUEST_LOCATION );
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(getActivity(),
+                            android.Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
+
+                        if (mGoogleApiClient == null) {
+                            buildGoogleApiClient();
+                        }
+
+                    }
+
+                } else {
+
+                    Toast.makeText(getActivity(), "permission denied", Toast.LENGTH_LONG).show();
+                    checkLocationPermission();
+                }
+                return;
+            }
+        }
+    }
+
+
 }

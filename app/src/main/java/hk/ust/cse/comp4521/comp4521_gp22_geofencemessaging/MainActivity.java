@@ -88,18 +88,18 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode,
-//                                           String permissions[], int[] grantResults) {
-//        if (requestCode == MapFragment.MY_PERMISSIONS_REQUEST_LOCATION){
-//            MapFragment mapFragment = (MapFragment) TabPagerAdapter.fragments[0];
-//            if (mapFragment != null) {
-//                mapFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//            }
-//        }
-//        else {
-//            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        }
-//    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        if (requestCode == PublicMessageFragment.PERMISSIONS_REQUEST_LOCATION){
+            PublicMessageFragment pFragment = (PublicMessageFragment) TabPagerAdapter.fragments[0];
+            if (pFragment != null) {
+                pFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            }
+        }
+        else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
 
 }

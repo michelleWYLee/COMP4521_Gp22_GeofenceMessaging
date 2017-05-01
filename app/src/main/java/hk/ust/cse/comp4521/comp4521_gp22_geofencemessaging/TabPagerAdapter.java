@@ -29,19 +29,20 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch(position){
             case 0:
-                return new MapFragment();
+                //return new MapFragment();
 
             case 1:
-                return new PublicMessageFragment();
+                //return new PublicMessageFragment();
 
             case 2:
-                return new NewFragment();
+                //return new NewFragment();
 
             case 3:
-                return new PrivateFragment();
+                //return new PrivateFragment();
 
             case 4:
-                return new AccountFragment();
+                //return new AccountFragment();
+                return new NewFragment();
 
         }
         return null;
