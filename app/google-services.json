@@ -1,65 +1,21 @@
 {
   "project_info": {
-    "project_number": "741331104906",
-    "firebase_url": "https://comp4521-a86e7.firebaseio.com",
-    "project_id": "comp4521-a86e7",
-    "storage_bucket": "comp4521-a86e7.appspot.com"
+    "project_number": "602889199180",
+    "firebase_url": "https://comp4521-8aa83.firebaseio.com",
+    "project_id": "comp4521-8aa83",
+    "storage_bucket": "comp4521-8aa83.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:741331104906:android:3b4c737c4c56b629",
-        "android_client_info": {
-          "package_name": "hk.ust.cse.comp4521.secret"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "741331104906-vjeem0n1ncsrh8fv645gq5abbbv7qb30.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "hk.ust.cse.comp4521.secret",
-            "certificate_hash": "3de913fd4b9811e6c4cb90174feee51d950f8069"
-          }
-        },
-        {
-          "client_id": "741331104906-bo93is6baeset9aga4j38tk79lvmesqg.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDqc_rM5jYh_JTQsBeQZ5a3xYfm77r7p8c"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "741331104906-bo93is6baeset9aga4j38tk79lvmesqg.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:741331104906:android:038f15622483b4e1",
+        "mobilesdk_app_id": "1:602889199180:android:038f15622483b4e1",
         "android_client_info": {
           "package_name": "hk.ust.cse.comp4521.comp4521_gp22_geofencemessaging"
         }
       },
       "oauth_client": [
         {
-          "client_id": "741331104906-ubkekmrsnqkmebcb3chb3ufsmt85ot1r.apps.googleusercontent.com",
+          "client_id": "602889199180-f07go5ltlighgfqrp8utqd5def92k9ve.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "hk.ust.cse.comp4521.comp4521_gp22_geofencemessaging",
@@ -67,13 +23,13 @@
           }
         },
         {
-          "client_id": "741331104906-bo93is6baeset9aga4j38tk79lvmesqg.apps.googleusercontent.com",
+          "client_id": "602889199180-k04jdgo1h8g735vg88kjif17f66ipej5.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDqc_rM5jYh_JTQsBeQZ5a3xYfm77r7p8c"
+          "current_key": "AIzaSyBxCmMxgjxShjzGPuK0JiwIv7CoPSgDEK4"
         }
       ],
       "services": {
@@ -84,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "741331104906-bo93is6baeset9aga4j38tk79lvmesqg.apps.googleusercontent.com",
+              "client_id": "602889199180-k04jdgo1h8g735vg88kjif17f66ipej5.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
