@@ -1,5 +1,7 @@
 package hk.ust.cse.comp4521.comp4521_gp22_geofencemessaging;
 
+import android.*;
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -12,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,9 +36,8 @@ import java.util.Locale;
 public class PublicMessageFragment extends Fragment
         implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener
-{
-    public static final String ARGS_longitude ="args_logitude";
+        LocationListener {
+    public static final String ARGS_longitude = "args_logitude";
     public static final String ARGS_latitude = "args_latitude";
 
     Location mLastLocation;
@@ -44,6 +46,9 @@ public class PublicMessageFragment extends Fragment
     String mLatitudeText;
 
     public static final int PERMISSIONS_REQUEST_LOCATION = 99;
+
+    private long UPDATE_INTERVAL = 10 * 1000;  /* 10 secs */
+    private long FASTEST_INTERVAL = 2000; /* 2 sec */
 
     //Geocoder getName = new Geocoder(getActivity(), Locale.ENGLISH);
 
@@ -61,35 +66,64 @@ public class PublicMessageFragment extends Fragment
 //    }
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         buildGoogleApiClient();
 
+
         // Getting values with key.
-       // mPage = getArguments().getInt(ARGS_PAGE);
+        // mPage = getArguments().getInt(ARGS_PAGE);
         //test = getArguments().getString("ARGS_TEST");
 
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        mGoogleApiClient.connect();
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         checkLocationPermission();
-        mLocationRequest = new LocationRequest();
-        //set getlocation time to 1s = 1000ms
-        mLocationRequest.setInterval(1000);
-        mLocationRequest.setFastestInterval(1000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+
+//        if (ContextCompat.checkSelfPermission(getActivity(),
+//                android.Manifest.permission.ACCESS_FINE_LOCATION)
+//                == PackageManager.PERMISSION_GRANTED) {
+//            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+//        }
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLastLocation != null) {
+            Log.d("DEBUG", "current location: " + mLastLocation.toString());
+            mLatitudeText = (String.valueOf(mLastLocation.getLatitude()));
+        }
+
+        startLocationUpdates();
+
+    }
+
+    protected void startLocationUpdates() {
+//        mLocationRequest = new LocationRequest();
+//        //set getlocation time to 1s = 1000ms
+//        mLocationRequest.setInterval(1000);
+//        mLocationRequest.setFastestInterval(1000);
+//        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        mLocationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(UPDATE_INTERVAL)
+                .setFastestInterval(FASTEST_INTERVAL);
+
         if (ContextCompat.checkSelfPermission(getActivity(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (mLastLocation != null) {
-            mLatitudeText=(String.valueOf(mLastLocation.getLatitude()));
-        }
+
     }
 
 
@@ -117,14 +151,7 @@ public class PublicMessageFragment extends Fragment
 
     }
 
-    protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-        mGoogleApiClient.connect();
-    }
+
 
     @Nullable
     @Override
@@ -179,7 +206,7 @@ public class PublicMessageFragment extends Fragment
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //Prompt the user once explanation has been shown
                                 ActivityCompat.requestPermissions(getActivity(),
-                                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                                        new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,android.Manifest.permission.ACCESS_FINE_LOCATION},
                                         PERMISSIONS_REQUEST_LOCATION );
                             }
                         })
@@ -190,7 +217,7 @@ public class PublicMessageFragment extends Fragment
             } else {
                 //request the permission without explanation
                 ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,android.Manifest.permission.ACCESS_FINE_LOCATION},
                         PERMISSIONS_REQUEST_LOCATION );
             }
         }
