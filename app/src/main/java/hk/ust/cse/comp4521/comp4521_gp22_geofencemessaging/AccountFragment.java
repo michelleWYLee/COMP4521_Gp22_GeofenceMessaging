@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
+//TO-DO: change password, change email, remove, signout
 public class AccountFragment extends Fragment {
     public static final String ARGS_PAGE = "args_page";
     private int mPage;
