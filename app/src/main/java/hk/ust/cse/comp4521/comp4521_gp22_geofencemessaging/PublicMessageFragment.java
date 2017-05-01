@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -91,15 +92,23 @@ public class PublicMessageFragment extends Fragment
     public void onConnected(@Nullable Bundle bundle) {
         checkLocationPermission();
 
-//        if (ContextCompat.checkSelfPermission(getActivity(),
-//                android.Manifest.permission.ACCESS_FINE_LOCATION)
-//                == PackageManager.PERMISSION_GRANTED) {
-//            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-//        }
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+//
+//            if (ContextCompat.checkSelfPermission(getActivity(),
+//                    android.Manifest.permission.ACCESS_FINE_LOCATION)
+//                    == PackageManager.PERMISSION_GRANTED) {
+//                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+//            }
+
+
         if (mLastLocation != null) {
             Log.d("DEBUG", "current location: " + mLastLocation.toString());
             mLatitudeText = (String.valueOf(mLastLocation.getLatitude()));
+
+            String message = "Current Location is: " +
+                    "  Latitude = " + String.valueOf(mLastLocation.getLatitude()) +
+                    "  Longitude = " + String.valueOf(mLastLocation.getLongitude());
+            Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
         }
 
         startLocationUpdates();
@@ -157,6 +166,7 @@ public class PublicMessageFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //smooth scroll
+        int count =0;
         View view = inflater.inflate(R.layout.fragment_public,container,false);
         TextView textView = (TextView) view.findViewById(R.id.textLat);
         if(mLastLocation == null){
@@ -171,7 +181,8 @@ public class PublicMessageFragment extends Fragment
     public void onLocationChanged(Location location) {
         mLastLocation = location;
         //LatLng = latitude Longitude
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        //TextView textView = (TextView) findViewById(R.id.textLat);
+        //textView.setText(String.valueOf(mLastLocation.getLatitude()));
 
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
