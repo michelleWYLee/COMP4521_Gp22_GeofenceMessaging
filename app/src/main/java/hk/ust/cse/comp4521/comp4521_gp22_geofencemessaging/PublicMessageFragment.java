@@ -41,23 +41,26 @@ public class PublicMessageFragment extends Fragment
     Location mLastLocation;
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
+    String mLatitudeText;
 
     public static final int PERMISSIONS_REQUEST_LOCATION = 99;
 
     //Geocoder getName = new Geocoder(getActivity(), Locale.ENGLISH);
 
-    public static PublicMessageFragment newInstance() {
-        Bundle args = new Bundle();
+//    public static PublicMessageFragment newInstance() {
+//        Bundle args = new Bundle();
+//
+//        // Getting values from TabPagerAdapter.
+//        //args.putInt(ARGS_PAGE, page);
+//        //args.putString();
+////        args.putDouble(ARGS_longitude,longitude);
+////        args.putDouble(ARGS_latitude,latitude);
+//        PublicMessageFragment fragment = new PublicMessageFragment();
+////        fragment.setArguments(args);
+//        return fragment;
+//    }
 
-        // Getting values from TabPagerAdapter.
-        //args.putInt(ARGS_PAGE, page);
-        //args.putString();
-//        args.putDouble(ARGS_longitude,longitude);
-//        args.putDouble(ARGS_latitude,latitude);
-        PublicMessageFragment fragment = new PublicMessageFragment();
-//        fragment.setArguments(args);
-        return fragment;
-    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,7 +74,8 @@ public class PublicMessageFragment extends Fragment
     }
 
     @Override
-    public void onConnected(Bundle bundle) {
+    public void onConnected(@Nullable Bundle bundle) {
+        checkLocationPermission();
         mLocationRequest = new LocationRequest();
         //set getlocation time to 1s = 1000ms
         mLocationRequest.setInterval(1000);
@@ -82,8 +86,24 @@ public class PublicMessageFragment extends Fragment
                 == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLastLocation != null) {
+            mLatitudeText=(String.valueOf(mLastLocation.getLatitude()));
+        }
     }
 
+
+    @Override
+    public void onStart(){
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
 
 
     @Override
@@ -111,9 +131,12 @@ public class PublicMessageFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //smooth scroll
         View view = inflater.inflate(R.layout.fragment_public,container,false);
-        TextView textView = (TextView) view.findViewById(R.id.item_title);
-        //textView.setText(locationAddress);
-
+        TextView textView = (TextView) view.findViewById(R.id.textLat);
+        if(mLastLocation == null){
+            textView.setText("location not found");
+        }else {
+            textView.setText(String.valueOf(mLastLocation.getLatitude()));
+        }
         return view;
     }
 
@@ -122,14 +145,17 @@ public class PublicMessageFragment extends Fragment
         mLastLocation = location;
         //LatLng = latitude Longitude
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-    }
 
+        if (mGoogleApiClient != null) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        }
+    }
 
 
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        mGoogleApiClient.connect();
     }
 
     @Override
@@ -194,7 +220,7 @@ public class PublicMessageFragment extends Fragment
                 } else {
 
                     Toast.makeText(getActivity(), "permission denied", Toast.LENGTH_LONG).show();
-                    checkLocationPermission();
+
                 }
                 return;
             }

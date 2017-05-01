@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         if (requestCode == PublicMessageFragment.PERMISSIONS_REQUEST_LOCATION){
-            PublicMessageFragment pFragment = (PublicMessageFragment) TabPagerAdapter.fragments[0];
+            PublicMessageFragment pFragment = (PublicMessageFragment) TabPagerAdapter.fragments[1];
             if (pFragment != null) {
                 pFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
             }
