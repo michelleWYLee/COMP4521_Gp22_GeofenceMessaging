@@ -30,9 +30,9 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
         switch(position){
             case 0:
                 //return new MapFragment();
-
+                return new NewFragment();
             case 1:
-                //return new PublicMessageFragment();
+                return new PublicMessageFragment();
 
             case 2:
                 //return new NewFragment();
