@@ -61,7 +61,7 @@ public class PublicMsgActivity extends AppCompatActivity
 
     private AddressResultReceiver mResultReceiver;
 
-    protected String mPOIOutput, mLocationOutput, mAddressOutput;
+    protected String mLocationOutput, mAddressOutput;
 
     protected static final String ADDRESS_REQUESTED_KEY = "address-request-pending";
     protected static final String LOCATION_ADDRESS_KEY = "location-address";
@@ -373,7 +373,7 @@ public class PublicMsgActivity extends AppCompatActivity
 
         String message = tv.getText().toString();
 
-        tv.setText(mPOIOutput+"\n" + mLocationOutput + "\nCurrent Address: "+mAddressOutput);
+        tv.setText(mLocationOutput + "\nCurrent Address: "+mAddressOutput);
     }
 
     /**
