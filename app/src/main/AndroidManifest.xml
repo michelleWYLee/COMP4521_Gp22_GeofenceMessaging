@@ -56,6 +56,9 @@
         <activity android:name=".PrivateMsgActivity" />
         <activity android:name=".MapActivity" />
         <activity android:name=".NewActivity"></activity>
+        <service
+            android:name=".FetchAddressIntentService"
+            android:exported="false"/>
     </application>
 
 </manifest>
