@@ -19,4 +19,5 @@ About location:
 2. use GPS outdoor, network indoor
 3. location name shown using geocoder(maxi 2500 request per day)
 
-Implemented:
+TO-DO:
+Sign up: add user name to firebase

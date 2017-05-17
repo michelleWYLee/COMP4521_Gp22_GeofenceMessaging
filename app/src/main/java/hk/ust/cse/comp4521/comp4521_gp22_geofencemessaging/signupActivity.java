@@ -16,9 +16,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+//TO-DO ADD USER NAME TO ACCOUNT WHEN REGISTER
+
 public class signupActivity extends AppCompatActivity {
 
-    private EditText inputEmail, inputPassword;
+    private EditText inputEmail, inputPassword,inputUserName;
     private Button btnSignIn, btnSignUp, btnResetPassword;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
@@ -35,6 +37,7 @@ public class signupActivity extends AppCompatActivity {
         btnSignUp = (Button) findViewById(R.id.sign_up_button);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
+        inputUserName = (EditText) findViewById(R.id.userID);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         btnResetPassword = (Button) findViewById(R.id.btn_reset_password);
 
@@ -58,6 +61,7 @@ public class signupActivity extends AppCompatActivity {
 
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
+                String userName = inputUserName.getText().toString().trim();
 
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
