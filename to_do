@@ -22,5 +22,6 @@ About location:
 TO-DO:
 Sign up: add user name to firebase
 intent to pass current location or find location again in each activity?
-Map: change style
+Map: change style   --done
      add markers and group to clusters
+Appbar: with search and people contacts (in progress)
