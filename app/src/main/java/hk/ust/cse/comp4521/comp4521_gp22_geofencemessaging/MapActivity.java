@@ -1,25 +1,30 @@
 package hk.ust.cse.comp4521.comp4521_gp22_geofencemessaging;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.util.Log;
+
 
 import com.firebase.geofire.GeoFire;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private ImageButton map,publicMsg,privateMsg,add,me;
+    private static final String TAG = MapActivity.class.getSimpleName();
 
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference("path/to/geofire");
     GeoFire geoFire = new GeoFire(ref);
@@ -32,58 +37,64 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         setContentView(R.layout.activity_map);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        //SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+          //      .findFragmentById(R.id.map);
+        //mapFragment.getMapAsync(this);
+
+        // We need to ensure that we get access to the map object. We need to wait
+        // for the map object to be setup. This requires the implementation of an
+        // async callback method onMapReady() where we get the reference to the map.
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapview);
         mapFragment.getMapAsync(this);
 
         /***************
          * change of current activity
          ***************/
-//        map = (ImageButton) findViewById(R.id.mapBtn);
-//        publicMsg = (ImageButton) findViewById(R.id.groupChatBtn);
-//        privateMsg = (ImageButton) findViewById(R.id.privateBtn);
-//        add = (ImageButton) findViewById(R.id.addBtn);
-//        me = (ImageButton) findViewById(R.id.meBtn);
-//
-//        map.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MapActivity.this, MapActivity.class));
-//                finish();
-//            }
-//        });
-//
-//        publicMsg.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MapActivity.this, PublicMsgActivity.class));
-//                finish();
-//            }
-//        });
-//
-//        privateMsg.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MapActivity.this, PrivateMsgActivity.class));
-//                finish();
-//            }
-//        });
-//
-//        add.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MapActivity.this, NewActivity.class));
-//                finish();
-//            }
-//        });
-//
-//        me.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MapActivity.this, AccountActivity.class));
-//                finish();
-//            }
-//        });
+        map = (ImageButton) findViewById(R.id.mapBtn);
+        publicMsg = (ImageButton) findViewById(R.id.groupChatBtn);
+        privateMsg = (ImageButton) findViewById(R.id.privateBtn);
+        add = (ImageButton) findViewById(R.id.addBtn);
+        me = (ImageButton) findViewById(R.id.meBtn);
+
+        map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MapActivity.this, MapActivity.class));
+                finish();
+            }
+        });
+
+        publicMsg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MapActivity.this, PublicMsgActivity.class));
+                finish();
+            }
+        });
+
+        privateMsg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MapActivity.this, PrivateMsgActivity.class));
+                finish();
+            }
+        });
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MapActivity.this, NewActivity.class));
+                finish();
+            }
+        });
+
+        me.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MapActivity.this, AccountActivity.class));
+                finish();
+            }
+        });
 
     }
 
@@ -99,11 +110,29 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
+        try {
+            // Customise the styling of the base map using a JSON object defined
+            // in a raw resource file.
+            boolean success = googleMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            this, R.raw.style_json));
+
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.");
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e(TAG, "Can't find style. Error: ", e);
+
+
+        }
+
+       //TO-DO, Get data from fire base and add marker here
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng hk = new LatLng(22.32, 114.23);
+        mMap.addMarker(new MarkerOptions().position(hk).title("Marker in Choi Hung"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(hk));
     }
 }

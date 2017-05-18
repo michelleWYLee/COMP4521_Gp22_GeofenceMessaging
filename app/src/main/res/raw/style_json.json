@@ -33,6 +33,15 @@
     ]
   },
   {
+    "featureType": "administrative.country",
+    "elementType": "labels.text",
+    "stylers": [
+      {
+        "visibility": "on"
+      }
+    ]
+  },
+  {
     "featureType": "administrative.land_parcel",
     "elementType": "geometry.stroke",
     "stylers": [
@@ -78,6 +87,24 @@
     ]
   },
   {
+    "featureType": "poi.attraction",
+    "elementType": "labels",
+    "stylers": [
+      {
+        "visibility": "on"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.government",
+    "elementType": "labels",
+    "stylers": [
+      {
+        "visibility": "on"
+      }
+    ]
+  },
+  {
     "featureType": "poi.park",
     "elementType": "geometry.fill",
     "stylers": [
@@ -92,6 +119,15 @@
     "stylers": [
       {
         "color": "#447530"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.school",
+    "elementType": "labels",
+    "stylers": [
+      {
+        "visibility": "on"
       }
     ]
   },

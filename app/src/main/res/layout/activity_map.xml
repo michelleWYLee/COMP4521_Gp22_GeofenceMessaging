@@ -1,64 +1,80 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="hk.ust.cse.comp4521.comp4521_gp22_geofencemessaging.MapActivity" />
+    tools:context="hk.ust.cse.comp4521.comp4521_gp22_geofencemessaging.MapActivity">
 
-    <!--<LinearLayout-->
+    <!--<android.support.design.widget.AppBarLayout-->
         <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_marginTop="480dp"-->
-        <!--android:gravity="center"-->
-        <!--android:orientation="horizontal">-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:theme="@style/AppTheme.AppBarOverlay">-->
 
-        <!--<ImageButton-->
-            <!--android:id="@+id/mapBtn"-->
+        <!--<android.support.v7.widget.Toolbar-->
+            <!--android:id="@+id/toolbar"-->
             <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1"-->
-            <!--android:background="@color/com_facebook_button_login_silver_background_color"-->
-            <!--android:scaleType="centerInside"-->
-            <!--app:srcCompat="@drawable/map" />-->
+            <!--android:layout_height="?attr/actionBarSize"-->
+            <!--android:background="?attr/colorPrimary"-->
+            <!--app:popupTheme="@style/AppTheme.PopupOverlay" />-->
 
-        <!--<ImageButton-->
-            <!--android:id="@+id/groupChatBtn"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1"-->
-            <!--android:background="@color/com_facebook_button_login_silver_background_color"-->
-            <!--android:contentDescription=""-->
-            <!--android:scaleType="centerInside"-->
-            <!--app:srcCompat="@drawable/groupchat" />-->
+    <!--</android.support.design.widget.AppBarLayout>-->
 
-        <!--<ImageButton-->
-            <!--android:id="@+id/addBtn"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1"-->
-            <!--android:background="@color/com_facebook_button_login_silver_background_color"-->
-            <!--android:scaleType="centerInside"-->
-            <!--app:srcCompat="@drawable/add" />-->
+    <include layout="@layout/content_map" />
 
-        <!--<ImageButton-->
-            <!--android:id="@+id/privateBtn"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1"-->
-            <!--android:background="@color/com_facebook_button_login_silver_background_color"-->
-            <!--android:scaleType="centerInside"-->
-            <!--app:srcCompat="@drawable/privatechat" />-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="480dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-        <!--<ImageButton-->
-            <!--android:id="@+id/meBtn"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1"-->
-            <!--android:background="@color/com_facebook_button_login_silver_background_color"-->
-            <!--android:scaleType="centerInside"-->
-            <!--app:srcCompat="@drawable/me" />-->
-    <!--</LinearLayout>-->
+        <ImageButton
+            android:id="@+id/mapBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/com_facebook_button_login_silver_background_color"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/map" />
+
+        <ImageButton
+            android:id="@+id/groupChatBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/com_facebook_button_login_silver_background_color"
+            android:contentDescription=""
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/groupchat" />
+
+        <ImageButton
+            android:id="@+id/addBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/com_facebook_button_login_silver_background_color"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/add" />
+
+        <ImageButton
+            android:id="@+id/privateBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/com_facebook_button_login_silver_background_color"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/privatechat" />
+
+        <ImageButton
+            android:id="@+id/meBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/com_facebook_button_login_silver_background_color"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/me" />
+    </LinearLayout>
 
 
+    </android.support.design.widget.CoordinatorLayout>
