@@ -112,7 +112,9 @@ public class PublicMsgActivity extends AppCompatActivity
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(PublicMsgActivity.this, MapActivity.class));
+                Intent intent = new Intent(PublicMsgActivity.this, MapActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
                 finish();
             }
         });
@@ -120,7 +122,9 @@ public class PublicMsgActivity extends AppCompatActivity
         publicMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(PublicMsgActivity.this, PublicMsgActivity.class));
+                Intent intent = new Intent(PublicMsgActivity.this, PublicMsgActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
                 finish();
             }
         });
@@ -128,7 +132,9 @@ public class PublicMsgActivity extends AppCompatActivity
         privateMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(PublicMsgActivity.this, PrivateMsgActivity.class));
+                Intent intent = new Intent(PublicMsgActivity.this, PrivateMsgActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
                 finish();
             }
         });
@@ -136,7 +142,9 @@ public class PublicMsgActivity extends AppCompatActivity
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(PublicMsgActivity.this, NewActivity.class));
+                Intent intent = new Intent(PublicMsgActivity.this, NewActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
                 finish();
             }
         });
@@ -144,7 +152,9 @@ public class PublicMsgActivity extends AppCompatActivity
         me.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(PublicMsgActivity.this, AccountActivity.class));
+                Intent intent = new Intent(PublicMsgActivity.this, AccountActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
                 finish();
             }
         });
