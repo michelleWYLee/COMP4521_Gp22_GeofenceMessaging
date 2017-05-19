@@ -4,11 +4,18 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 
 public class NewActivity extends AppCompatActivity {
 
     private ImageButton map,publicMsg,privateMsg,add,me;
+
+    private EditText inputSubject,inputMsg;
+    private RadioButton anonymous;
+    private Button share;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,5 +81,33 @@ public class NewActivity extends AppCompatActivity {
             }
         });
 
+
+
+        //Process data
+        inputSubject = (EditText) findViewById(R.id.subject);
+        inputMsg = (EditText) findViewById(R.id.msg);
+        share = (Button) findViewById(R.id.send);
+        anonymous = (RadioButton) findViewById(R.id.anonymous);
+
+        //TO-DO: add to firebase
+        share.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                String subject = inputSubject.getText().toString();
+                String message = inputMsg.getText().toString();
+
+                //if set the msg as anonymous
+                if(anonymous.isChecked()){
+
+                }
+
+
+            }
+        });
+
+
     }
+
+
+
 }
