@@ -4,7 +4,7 @@
     android:id="@+id/mapview"
     android:name="com.google.android.gms.maps.MapFragment"
     android:layout_width="match_parent"
-    android:layout_height="480dp"
+    android:layout_height="530dp"
     map:cameraBearing="0"
     map:cameraTargetLat="22.32"
     map:cameraTargetLng="114.23"
