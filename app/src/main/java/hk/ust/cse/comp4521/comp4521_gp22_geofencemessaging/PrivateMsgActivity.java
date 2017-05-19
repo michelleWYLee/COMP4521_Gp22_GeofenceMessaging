@@ -27,7 +27,9 @@ public class PrivateMsgActivity extends AppCompatActivity {
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(PrivateMsgActivity.this, MapActivity.class));
+                Intent intent = new Intent(PrivateMsgActivity.this, MapActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
                 finish();
             }
         });
@@ -35,7 +37,9 @@ public class PrivateMsgActivity extends AppCompatActivity {
         publicMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(PrivateMsgActivity.this, PublicMsgActivity.class));
+                Intent intent = new Intent(PrivateMsgActivity.this, PublicMsgActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
                 finish();
             }
         });
@@ -43,7 +47,9 @@ public class PrivateMsgActivity extends AppCompatActivity {
         privateMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(PrivateMsgActivity.this, PrivateMsgActivity.class));
+                Intent intent = new Intent(PrivateMsgActivity.this, PrivateMsgActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
                 finish();
             }
         });
@@ -51,7 +57,9 @@ public class PrivateMsgActivity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(PrivateMsgActivity.this, NewActivity.class));
+                Intent intent = new Intent(PrivateMsgActivity.this, NewActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
                 finish();
             }
         });
@@ -59,7 +67,9 @@ public class PrivateMsgActivity extends AppCompatActivity {
         me.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(PrivateMsgActivity.this, AccountActivity.class));
+                Intent intent = new Intent(PrivateMsgActivity.this, AccountActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
                 finish();
             }
         });

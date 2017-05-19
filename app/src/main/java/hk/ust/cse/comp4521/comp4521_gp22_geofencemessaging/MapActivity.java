@@ -59,7 +59,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MapActivity.this, MapActivity.class));
+                Intent intent = new Intent(MapActivity.this, MapActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
                 finish();
             }
         });
@@ -67,7 +69,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         publicMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MapActivity.this, PublicMsgActivity.class));
+                Intent intent = new Intent(MapActivity.this, PublicMsgActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
                 finish();
             }
         });
@@ -75,7 +79,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         privateMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MapActivity.this, PrivateMsgActivity.class));
+                Intent intent = new Intent(MapActivity.this, PrivateMsgActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
                 finish();
             }
         });
@@ -83,7 +89,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MapActivity.this, NewActivity.class));
+                Intent intent = new Intent(MapActivity.this, NewActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
                 finish();
             }
         });
@@ -91,7 +99,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         me.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MapActivity.this, AccountActivity.class));
+                Intent intent = new Intent(MapActivity.this, AccountActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
                 finish();
             }
         });
