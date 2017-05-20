@@ -38,6 +38,8 @@
     <string name="fetch_address">Fetch address</string>
 
     <string name="address_found">Address found</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
 
     <string name="no_address_found">Sorry, no address found</string>
     <string name="no_location_data_provided">No location data provided</string>

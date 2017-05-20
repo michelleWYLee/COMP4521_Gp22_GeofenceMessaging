@@ -156,7 +156,7 @@ public class PublicMsgActivity extends AppCompatActivity
         me.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PublicMsgActivity.this, AccountActivity.class);
+                Intent intent = new Intent(PublicMsgActivity.this, NewAccountActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 finish();
