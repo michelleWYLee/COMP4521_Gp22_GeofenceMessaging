@@ -18,7 +18,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import static android.widget.Toast.makeText;
 
 public class NewAccountActivity extends AppCompatActivity
         implements ChangePasswordDialog.changePasswordDialogListener,
@@ -35,7 +34,6 @@ public class NewAccountActivity extends AppCompatActivity
 
     private TextView userName;
 
-    boolean passwordChange = false;
 
     
 
@@ -49,6 +47,9 @@ public class NewAccountActivity extends AppCompatActivity
         //get current user
         user = FirebaseAuth.getInstance().getCurrentUser();
 
+        //Display user name
+        userName = (TextView) findViewById(R.id.DisplayName);
+
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -58,10 +59,13 @@ public class NewAccountActivity extends AppCompatActivity
                     // launch login activity
                     startActivity(new Intent(NewAccountActivity.this, LoginActivity.class));
                     finish();
+                }else{
+
                 }
             }
         };
 
+        userName.setText(user.getDisplayName());
 
         /***************
          * change of current activity
@@ -134,10 +138,11 @@ public class NewAccountActivity extends AppCompatActivity
         remove = (Button) findViewById(R.id.deleteAcc);
         signOut = (Button) findViewById(R.id.signout);
 
+
         changeUserName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                showChangeUsernameDialog();
             }
         });
 

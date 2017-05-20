@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -119,11 +120,25 @@ public class signupActivity extends AppCompatActivity {
 
     private void onAuthSuccess(FirebaseUser user, String username){
 
-        mDatabase.child("users").child(user.getUid()).child("name").setValue(username);
+       // mDatabase.child("users").child(user.getUid()).child("name").setValue(username);
 
-        //if successfully registered
-        startActivity(new Intent(signupActivity.this, PublicMsgActivity.class));
-        finish();
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(username)
+                .build();
+
+        user.updateProfile(profileUpdates)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            //if successfully registered
+                            startActivity(new Intent(signupActivity.this, PublicMsgActivity.class));
+                            finish();
+                        }
+                    }
+                });
+
+
 
 
     }
