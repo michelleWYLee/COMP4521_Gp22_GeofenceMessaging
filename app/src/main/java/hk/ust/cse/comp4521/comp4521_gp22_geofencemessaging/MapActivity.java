@@ -99,7 +99,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         me.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MapActivity.this, AccountActivity.class);
+                Intent intent = new Intent(MapActivity.this, NewAccountActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 finish();

@@ -29,6 +29,7 @@ public class AccountActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
 
+
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class AccountActivity extends AppCompatActivity {
                     startActivity(new Intent(AccountActivity.this, LoginActivity.class));
                     finish();
                 }
+
             }
         };
 

@@ -88,7 +88,7 @@ public class PublicMsgActivity extends AppCompatActivity
         auth = FirebaseAuth.getInstance();
 
         //get current user
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
 
         authListener = new FirebaseAuth.AuthStateListener() {

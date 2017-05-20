@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 
 public class NewAccountActivity extends AppCompatActivity
@@ -323,7 +324,21 @@ public class NewAccountActivity extends AppCompatActivity
     }
 
     @Override
-    public void onReturnUsername(String username) {
+    public void onReturnUsername(final String username) {
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(username)
+                .build();
+
+        user.updateProfile(profileUpdates)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            //if successfully registered
+                            Toast.makeText(NewAccountActivity.this, "Your name" + username+" is updated", Toast.LENGTH_SHORT).show();
+                        }                    }
+                });
+
 
     }
 }
