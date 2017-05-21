@@ -10,10 +10,17 @@ public class PrivateMsgActivity extends AppCompatActivity {
 
     private ImageButton map,publicMsg,privateMsg,add,me;
 
+    private double longitude;
+    private double latitude;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_private_msg);
+
+        //get the location from start intent
+        longitude = getIntent().getExtras().getDouble("lng");
+        latitude = getIntent().getExtras().getDouble("lat");
 
         /***************
          * change of current activity
@@ -28,6 +35,8 @@ public class PrivateMsgActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PrivateMsgActivity.this, MapActivity.class);
+                intent.putExtra("lat",latitude);
+                intent.putExtra("lng",longitude);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 finish();
@@ -38,26 +47,32 @@ public class PrivateMsgActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PrivateMsgActivity.this, PublicMsgActivity.class);
+                intent.putExtra("lat",latitude);
+                intent.putExtra("lng",longitude);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 finish();
             }
         });
 
-        privateMsg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PrivateMsgActivity.this, PrivateMsgActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
-                finish();
-            }
-        });
+//        privateMsg.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(PrivateMsgActivity.this, PrivateMsgActivity.class);
+//                intent.putExtra("lat",latitude);
+//                intent.putExtra("lng",longitude);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PrivateMsgActivity.this, NewActivity.class);
+                intent.putExtra("lat",latitude);
+                intent.putExtra("lng",longitude);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 finish();
@@ -68,6 +83,8 @@ public class PrivateMsgActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PrivateMsgActivity.this, NewAccountActivity.class);
+                intent.putExtra("lat",latitude);
+                intent.putExtra("lng",longitude);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 finish();

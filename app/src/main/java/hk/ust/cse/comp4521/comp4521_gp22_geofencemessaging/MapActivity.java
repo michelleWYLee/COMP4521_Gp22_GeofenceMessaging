@@ -31,6 +31,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
 
+    private double longitude;
+    private double latitude;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +50,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapview);
         mapFragment.getMapAsync(this);
 
+
+        //get the location from start intent
+        longitude = getIntent().getExtras().getDouble("lng");
+        latitude = getIntent().getExtras().getDouble("lat");
+
         /***************
          * change of current activity
          ***************/
@@ -56,20 +64,24 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         add = (ImageButton) findViewById(R.id.addBtn);
         me = (ImageButton) findViewById(R.id.meBtn);
 
-        map.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MapActivity.this, MapActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
-                finish();
-            }
-        });
+//        map.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MapActivity.this, MapActivity.class);
+//                intent.putExtra("lat",latitude);
+//                intent.putExtra("lng",longitude);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
 
         publicMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MapActivity.this, PublicMsgActivity.class);
+                intent.putExtra("lat",latitude);
+                intent.putExtra("lng",longitude);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 finish();
@@ -80,6 +92,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MapActivity.this, PrivateMsgActivity.class);
+                intent.putExtra("lat",latitude);
+                intent.putExtra("lng",longitude);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 finish();
@@ -90,6 +104,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MapActivity.this, NewActivity.class);
+                intent.putExtra("lat",latitude);
+                intent.putExtra("lng",longitude);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 finish();
@@ -100,6 +116,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MapActivity.this, NewAccountActivity.class);
+                intent.putExtra("lat",latitude);
+                intent.putExtra("lng",longitude);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 finish();

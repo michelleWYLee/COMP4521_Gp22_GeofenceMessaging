@@ -117,26 +117,32 @@ public class PublicMsgActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PublicMsgActivity.this, MapActivity.class);
+                intent.putExtra("lat",latitude);
+                intent.putExtra("lng",longitude);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 finish();
             }
         });
 
-        publicMsg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PublicMsgActivity.this, PublicMsgActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
-                finish();
-            }
-        });
+//        publicMsg.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(PublicMsgActivity.this, PublicMsgActivity.class);
+//                intent.putExtra("lat",latitude);
+//                intent.putExtra("lng",longitude);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
 
         privateMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PublicMsgActivity.this, PrivateMsgActivity.class);
+                intent.putExtra("lat",latitude);
+                intent.putExtra("lng",longitude);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 finish();
@@ -147,6 +153,8 @@ public class PublicMsgActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PublicMsgActivity.this, NewActivity.class);
+                intent.putExtra("lat",latitude);
+                intent.putExtra("lng",longitude);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 finish();
@@ -157,6 +165,8 @@ public class PublicMsgActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PublicMsgActivity.this, NewAccountActivity.class);
+                intent.putExtra("lat",latitude);
+                intent.putExtra("lng",longitude);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 finish();

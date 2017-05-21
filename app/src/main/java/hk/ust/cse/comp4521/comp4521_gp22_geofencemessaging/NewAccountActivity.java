@@ -35,6 +35,9 @@ public class NewAccountActivity extends AppCompatActivity
 
     private TextView userName;
 
+    private double longitude;
+    private double latitude;
+
 
     
 
@@ -68,6 +71,10 @@ public class NewAccountActivity extends AppCompatActivity
 
         userName.setText(user.getDisplayName());
 
+        //get the location from start intent
+        longitude = getIntent().getExtras().getDouble("lng");
+        latitude = getIntent().getExtras().getDouble("lat");
+
         /***************
          * change of current activity
          ***************/
@@ -81,6 +88,8 @@ public class NewAccountActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(NewAccountActivity.this, MapActivity.class);
+                intent.putExtra("lat",latitude);
+                intent.putExtra("lng",longitude);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 finish();
@@ -91,6 +100,8 @@ public class NewAccountActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(NewAccountActivity.this, PublicMsgActivity.class);
+                intent.putExtra("lat",latitude);
+                intent.putExtra("lng",longitude);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 finish();
@@ -101,6 +112,8 @@ public class NewAccountActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(NewAccountActivity.this, PrivateMsgActivity.class);
+                intent.putExtra("lat",latitude);
+                intent.putExtra("lng",longitude);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 finish();
@@ -111,21 +124,25 @@ public class NewAccountActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(NewAccountActivity.this, NewActivity.class);
+                intent.putExtra("lat",latitude);
+                intent.putExtra("lng",longitude);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 finish();
             }
         });
 
-        me.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(NewAccountActivity.this, AccountActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
-                finish();
-            }
-        });
+//        me.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(NewAccountActivity.this, AccountActivity.class);
+//                intent.putExtra("lat",latitude);
+//                intent.putExtra("lng",longitude);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
 
 
 

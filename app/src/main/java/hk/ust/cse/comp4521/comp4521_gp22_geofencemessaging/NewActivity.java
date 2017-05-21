@@ -10,9 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class NewActivity extends AppCompatActivity {
 
@@ -24,6 +27,12 @@ public class NewActivity extends AppCompatActivity {
 
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
+    private DatabaseReference mDatabase;
+
+    private double longitude;
+    private double latitude;
+
+
 
     String uid;
 
@@ -35,7 +44,7 @@ public class NewActivity extends AppCompatActivity {
 
         //get firebase auth instance
         auth = FirebaseAuth.getInstance();
-//get current user
+        //get current user
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         authListener = new FirebaseAuth.AuthStateListener() {
@@ -54,8 +63,17 @@ public class NewActivity extends AppCompatActivity {
             }
         };
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
+
+        //get the location from start intent
+        longitude = getIntent().getExtras().getDouble("lng");
+        latitude = getIntent().getExtras().getDouble("lat");
+
+        Toast.makeText(this, String.valueOf(latitude )+" "+ String.valueOf(longitude), Toast.LENGTH_LONG).show();
 
         /***************
          * change of current activity
@@ -70,6 +88,8 @@ public class NewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(NewActivity.this, MapActivity.class);
+                intent.putExtra("lat",latitude);
+                intent.putExtra("lng",longitude);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 finish();
@@ -80,6 +100,8 @@ public class NewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(NewActivity.this, PublicMsgActivity.class);
+                intent.putExtra("lat",latitude);
+                intent.putExtra("lng",longitude);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 finish();
@@ -90,26 +112,32 @@ public class NewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(NewActivity.this, PrivateMsgActivity.class);
+                intent.putExtra("lat",latitude);
+                intent.putExtra("lng",longitude);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 finish();
             }
         });
 
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(NewActivity.this, NewActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
-                finish();
-            }
-        });
+//        add.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(NewActivity.this, NewActivity.class);
+//                intent.putExtra("lat",latitude);
+//                intent.putExtra("lng",longitude);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
 
         me.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(NewActivity.this, NewAccountActivity.class);
+                intent.putExtra("lat",latitude);
+                intent.putExtra("lng",longitude);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
                 finish();
