@@ -1,23 +1,21 @@
 package hk.ust.cse.comp4521.comp4521_gp22_geofencemessaging;
 
-import android.*;
 import android.Manifest;
 
-import android.app.LoaderManager;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -34,7 +32,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 public class PublicMsgActivity extends AppCompatActivity
@@ -74,6 +74,13 @@ public class PublicMsgActivity extends AppCompatActivity
     private ImageButton map,publicMsg,privateMsg,add,me;
 
 
+    //Recyclerview layout
+    private List<ItemData> itemList = new ArrayList<>();
+    private RecyclerView mRecyclerView;
+    private ItemAdapter mAdapter;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +90,8 @@ public class PublicMsgActivity extends AppCompatActivity
         setSupportActionBar(myToolbar);
 
         buildGoogleApiClient();
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
         //get firebase auth instance
         auth = FirebaseAuth.getInstance();
@@ -104,6 +113,29 @@ public class PublicMsgActivity extends AppCompatActivity
                 }
             }
         };
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+        mAdapter = new ItemAdapter(itemList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.addItemDecoration(new ItemDivider(this, LinearLayoutManager.VERTICAL));
+        mRecyclerView.setAdapter(mAdapter);
+
+        mRecyclerView.addOnItemTouchListener(new RecyclerListener(getApplicationContext(), mRecyclerView, new RecyclerListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                ItemData movie = itemList.get(position);
+                Toast.makeText(getApplicationContext(), movie.getTopic() + " is selected!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
 
 
          //change of current activity
@@ -174,12 +206,16 @@ public class PublicMsgActivity extends AppCompatActivity
         });
 
 
+
+
         mRequestingLocationUpdates = false;
         mLastUpdateTime = "";
 
         mResultReceiver = new AddressResultReceiver(new Handler());
         mAddressRequested = false;
         mAddressOutput = "";
+
+        prepareData();
 
         updateValuesFromBundle(savedInstanceState);
     }
@@ -454,7 +490,6 @@ public class PublicMsgActivity extends AppCompatActivity
     }
 
 
-
     @Override
     public void onConnectionSuspended(int cause) {
         // The connection to Google Play services was lost for some reason. We call connect() to
@@ -463,6 +498,40 @@ public class PublicMsgActivity extends AppCompatActivity
         mGoogleApiClient.connect();
     }
 
+
+    private void prepareData(){
+
+        ItemData movie = new ItemData("Mad Max: Fury Road", "2015", "Action & Adventure");
+        itemList.add(movie);
+
+        movie = new ItemData("Inside Out", "2015", "Animation, Kids & Family");
+        itemList.add(movie);
+
+        movie = new ItemData("Star Wars: Episode VII - The Force Awakens", "2015", "Action");
+        itemList.add(movie);
+
+        movie = new ItemData("Shaun the Sheep", "2015", "Animation");
+        itemList.add(movie);
+
+        movie = new ItemData("The Martian", "2015", "Science Fiction & Fantasy");
+        itemList.add(movie);
+
+        movie = new ItemData("Mission: Impossible Rogue Nation", "2015", "Action");
+        itemList.add(movie);
+
+        movie = new ItemData("Up", "2009", "Animation");
+        itemList.add(movie);
+
+        movie = new ItemData("Star Trek", "2009", "Science Fiction");
+        itemList.add(movie);
+
+        movie = new ItemData("The LEGO Movie", "2014", "Animation");
+        itemList.add(movie);
+
+        movie = new ItemData("Iron Man", "2008", "Action & Adventure");
+        itemList.add(movie);
+
+    }
 
 
 }
