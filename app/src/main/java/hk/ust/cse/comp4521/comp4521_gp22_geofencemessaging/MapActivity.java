@@ -159,8 +159,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng hk = new LatLng(22.32, 114.23);
-        mMap.addMarker(new MarkerOptions().position(hk).title("Marker in Choi Hung"));
+        LatLng hk = new LatLng(latitude, longitude);
+        mMap.addMarker(new MarkerOptions().position(hk).title("I am here!!"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(hk));
     }
 }
