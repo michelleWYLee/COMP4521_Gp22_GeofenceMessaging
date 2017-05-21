@@ -78,7 +78,7 @@ public class FetchAddressIntentService extends IntentService {
         // Locale, which represents a specific geographical or linguistic region. Locales are used
         // to alter the presentation of information such as numbers or dates to suit the conventions
         // in the region they describe.
-
+        //locale.ENGLISH
         Geocoder geocoder = new Geocoder(this, Locale.ENGLISH);
 
         // Address found using the Geocoder.

@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -79,6 +80,7 @@ public class PublicMsgActivity extends AppCompatActivity
     private RecyclerView mRecyclerView;
     private ItemAdapter mAdapter;
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
 
     @Override
@@ -92,6 +94,7 @@ public class PublicMsgActivity extends AppCompatActivity
         buildGoogleApiClient();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
 
         //get firebase auth instance
         auth = FirebaseAuth.getInstance();
@@ -127,6 +130,7 @@ public class PublicMsgActivity extends AppCompatActivity
         mRecyclerView.addOnItemTouchListener(new RecyclerListener(getApplicationContext(), mRecyclerView, new RecyclerListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
+                //TODO: what to do when click?
                 ItemData movie = itemList.get(position);
                 Toast.makeText(getApplicationContext(), movie.getTopic() + " is selected!", Toast.LENGTH_SHORT).show();
             }
@@ -136,6 +140,21 @@ public class PublicMsgActivity extends AppCompatActivity
 
             }
         }));
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        prepareData();
+                        mAdapter = new ItemAdapter(itemList);
+                        mRecyclerView.setAdapter(mAdapter);
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 2500);
+            }
+        });
 
 
          //change of current activity
@@ -432,8 +451,9 @@ public class PublicMsgActivity extends AppCompatActivity
         TextView tv = (TextView) findViewById(R.id.displayLocation);
 
         String message = tv.getText().toString();
+        //mLocationOutput + "
 
-        tv.setText(mLocationOutput + "\nCurrent Address: "+mAddressOutput);
+        tv.setText("Current Address: "+mAddressOutput);
     }
 
     /**
@@ -498,7 +518,7 @@ public class PublicMsgActivity extends AppCompatActivity
         mGoogleApiClient.connect();
     }
 
-
+    //TO-DO: get data from database
     private void prepareData(){
 
         ItemData movie = new ItemData("Mad Max: Fury Road", "2015", "Action & Adventure");

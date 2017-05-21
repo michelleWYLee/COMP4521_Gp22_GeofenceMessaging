@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
-    tools:background="@drawable/bg_gradient">
+    tools:background="@color/onclick">
 
     <TextView
         android:id="@+id/item_topic"
