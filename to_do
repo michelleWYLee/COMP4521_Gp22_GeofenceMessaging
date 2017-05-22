@@ -13,3 +13,19 @@
 	> Turn on and off interrupt by app
 	> UI
 	> test with gps.io
+
+About location:
+1. get coarse location from network fist then wait GPS for fine location
+2. use GPS outdoor, network indoor
+3. location name shown using geocoder(maxi 2500 request per day)
+
+TO-DO:
+Sign up: add user name to firebase
+intent to pass current location or find location again in each activity?
+Map: change style   --done
+     add markers and group to clusters
+Appbar: with search and people contacts (in progress)
+
+
+Remark:
+Account Activity is the old version copy, no longer use
