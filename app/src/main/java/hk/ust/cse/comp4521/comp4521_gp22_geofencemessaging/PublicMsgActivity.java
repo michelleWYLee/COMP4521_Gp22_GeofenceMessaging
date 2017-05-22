@@ -24,6 +24,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.algolia.search.saas.AlgoliaException;
+import com.algolia.search.saas.Client;
+import com.algolia.search.saas.CompletionHandler;
+import com.algolia.search.saas.Query;
+import com.algolia.search.saas.Query.LatLng;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -32,10 +38,16 @@ import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 public class PublicMsgActivity extends AppCompatActivity
@@ -46,9 +58,23 @@ public class PublicMsgActivity extends AppCompatActivity
     public static final int PERMISSIONS_REQUEST_LOCATION = 0;
     private String TAG = "PublicMsgActivity";
 
+    //firebase setup
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
 
+    private Client client = new Client("","");
+    private SearchResultJsonParser resultParser = new SearchResultJsonParser();
+
+
+    //Recyclerview layout
+    private List<ItemData> itemList = new ArrayList<>();
+    private RecyclerView mRecyclerView;
+    private ItemAdapter mAdapter;
+
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+
+
+    //fetch location
     protected GoogleApiClient mGoogleApiClient;
 
     protected Location mLastLocation, mCurrentLocation;
@@ -72,15 +98,10 @@ public class PublicMsgActivity extends AppCompatActivity
     public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
             UPDATE_INTERVAL_IN_MILLISECONDS / 2;
 
+    //xml function match
+
     private ImageButton map,publicMsg,privateMsg,add,me;
 
-
-    //Recyclerview layout
-    private List<ItemData> itemList = new ArrayList<>();
-    private RecyclerView mRecyclerView;
-    private ItemAdapter mAdapter;
-
-    private SwipeRefreshLayout mSwipeRefreshLayout;
 
 
     @Override
@@ -131,8 +152,8 @@ public class PublicMsgActivity extends AppCompatActivity
             @Override
             public void onClick(View view, int position) {
                 //TODO: what to do when click?
-                ItemData movie = itemList.get(position);
-                Toast.makeText(getApplicationContext(), movie.getTopic() + " is selected!", Toast.LENGTH_SHORT).show();
+                ItemData item = itemList.get(position);
+                Toast.makeText(getApplicationContext(), item.getTopic() + " is selected!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -147,7 +168,7 @@ public class PublicMsgActivity extends AppCompatActivity
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        prepareData();
+                        fetchData();
                         mAdapter = new ItemAdapter(itemList);
                         mRecyclerView.setAdapter(mAdapter);
                         mSwipeRefreshLayout.setRefreshing(false);
@@ -234,7 +255,10 @@ public class PublicMsgActivity extends AppCompatActivity
         mAddressRequested = false;
         mAddressOutput = "";
 
-        prepareData();
+        if(latitude != 0){
+            fetchData();
+        }
+
 
         updateValuesFromBundle(savedInstanceState);
     }
@@ -519,37 +543,20 @@ public class PublicMsgActivity extends AppCompatActivity
     }
 
     //TO-DO: get data from database
-    private void prepareData(){
+    private void fetchData(){
 
-        ItemData movie = new ItemData("Mad Max: Fury Road", "2015", "Action & Adventure");
-        itemList.add(movie);
-
-        movie = new ItemData("Inside Out", "2015", "Animation, Kids & Family");
-        itemList.add(movie);
-
-        movie = new ItemData("Star Wars: Episode VII - The Force Awakens", "2015", "Action");
-        itemList.add(movie);
-
-        movie = new ItemData("Shaun the Sheep", "2015", "Animation");
-        itemList.add(movie);
-
-        movie = new ItemData("The Martian", "2015", "Science Fiction & Fantasy");
-        itemList.add(movie);
-
-        movie = new ItemData("Mission: Impossible Rogue Nation", "2015", "Action");
-        itemList.add(movie);
-
-        movie = new ItemData("Up", "2009", "Animation");
-        itemList.add(movie);
-
-        movie = new ItemData("Star Trek", "2009", "Science Fiction");
-        itemList.add(movie);
-
-        movie = new ItemData("The LEGO Movie", "2014", "Animation");
-        itemList.add(movie);
-
-        movie = new ItemData("Iron Man", "2008", "Action & Adventure");
-        itemList.add(movie);
+       //set radius 500m
+        Query query = new Query().setAroundLatLng(new LatLng(latitude,longitude)).setAroundRadius(500);
+        client.getIndex("public_msg").searchAsync(query, new CompletionHandler() {
+            @Override
+            public void requestCompleted(JSONObject jsonObject, AlgoliaException e) {
+               if(jsonObject != null && e == null){
+                   //itemList
+                   itemList = resultParser.parseResults(jsonObject);
+                   Log.v(TAG,String.valueOf(itemList.size()));
+               }
+            }
+        });
 
     }
 

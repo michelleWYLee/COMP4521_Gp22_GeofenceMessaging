@@ -39,6 +39,8 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:10.2.0'
     compile 'javax.annotation:javax.annotation-api:1.2'
     compile 'com.android.support:recyclerview-v7:25.2.0'
+    compile 'com.algolia:algoliasearch-android:3.5'
+    compile 'com.google.code.gson:gson:2.3.1'
     testCompile 'junit:junit:4.12'
 }
 

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +13,8 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -31,10 +34,11 @@ public class NewActivity extends AppCompatActivity {
 
     private double longitude;
     private double latitude;
-
+    private GeoFire geofire;
 
 
     String uid;
+    String username;
 
 
     @Override
@@ -47,6 +51,9 @@ public class NewActivity extends AppCompatActivity {
         //get current user
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+        uid =user.getUid();
+        username = user.getDisplayName();
+
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -57,13 +64,10 @@ public class NewActivity extends AppCompatActivity {
                     startActivity(new Intent(NewActivity.this, LoginActivity.class));
                     finish();
                 }
-                else{
-                    uid =user.getUid();
-                }
             }
         };
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+       setupFirebase();
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -159,16 +163,58 @@ public class NewActivity extends AppCompatActivity {
                 String subject = inputSubject.getText().toString();
                 String message = inputMsg.getText().toString();
 
+                //generate timestamp
+                Long tsLong = System.currentTimeMillis()/1000;
+                String ts = tsLong.toString();
+
+                if (TextUtils.isEmpty(subject)) {
+                    inputSubject.setError("Required");
+                    //Toast.makeText(getApplicationContext(), "Please enter subject!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(message)) {
+                    inputMsg.setError("Required");
+                    Toast.makeText(getApplicationContext(), "Please enter content!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 //if set the msg as anonymous
                 if(anonymous.isChecked()){
-
+                    username = "Anonymous";
                 }
+                String key = mDatabase.child("public").push().getKey();
+                mDatabase.child("public").child(key).child("name").setValue(username);
+                mDatabase.child("public").child(key).child("topic").setValue(subject);
+                mDatabase.child("public").child(key).child("content").setValue(message);
+                mDatabase.child("public").child(key).child("longitude").setValue(latitude);
+                mDatabase.child("public").child(key).child("latitude").setValue(longitude);
+                mDatabase.child("public").child(key).child("uid").setValue(uid);
+                mDatabase.child("public").child(key).child("_geoloc").child("lat").setValue(latitude);
+                mDatabase.child("public").child(key).child("_geoloc").child("lng").setValue(longitude);
+
+                //TO-DO:location
+                //geofire.setLocation("",new GeoLocation(latitude,longitude));
+
+                //TO-DO: tell user successfully send and return to public msg
+                Toast.makeText(getApplicationContext(), "Posted!", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(NewActivity.this, PublicMsgActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+                finish();
 
 
             }
         });
 
 
+    }
+
+
+    private void setupFirebase(){
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        //geofire = new GeoFire(mDatabase.child("geofire"));
     }
 
 

@@ -5,10 +5,10 @@ import java.util.List;
 
 //Data for RecyclerView
 public class ItemData {
-    private String topic,name,content;
+    private String topic,name,content,uid;
 
     public ItemData(){}
-
+   // String uid, String lat,String lng,
     public ItemData(String topic,String name, String content){
         this.topic = topic;
         this.name = name;
@@ -38,4 +38,16 @@ public class ItemData {
     public void setContent(String content) {
         this.content = content;
     }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+
+
+
 }
