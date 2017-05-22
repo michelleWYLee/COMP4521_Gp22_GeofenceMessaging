@@ -4,10 +4,11 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
 import android.util.Log;
-
+import android.widget.Toast;
 
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -18,15 +19,22 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+
+//TO-DO here just read topic from firebase and display it on the map
+//If have time can implement map clusterManager too
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private ImageButton map,publicMsg,privateMsg,add,me;
     private static final String TAG = MapActivity.class.getSimpleName();
 
-    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("path/to/geofire");
+    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("");
 
 
     private GoogleMap mMap;
@@ -49,6 +57,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         // async callback method onMapReady() where we get the reference to the map.
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapview);
         mapFragment.getMapAsync(this);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
 
 
         //get the location from start intent
@@ -158,9 +169,40 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
        //TO-DO, Get data from fire base and add marker here
         mMap = googleMap;
 
+
         // Add a marker in Sydney and move the camera
         LatLng hk = new LatLng(latitude, longitude);
         mMap.addMarker(new MarkerOptions().position(hk).title("I am here!!"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(hk));
+
+        mDatabase.child("public").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot postSnapShot : dataSnapshot.getChildren()){
+                    //String name = postSnapShot.getKey();
+
+                    String Topic = postSnapShot.child("topic").getValue(String.class);
+                    double lat = postSnapShot.child("longitude").getValue(double.class);
+                    double lng = postSnapShot.child("latitude").getValue(double.class);
+
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lng)).title(Topic));
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+                Toast.makeText(getApplicationContext(), "Database Error!", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+
+
+
     }
 }

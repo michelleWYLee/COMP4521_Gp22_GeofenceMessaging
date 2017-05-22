@@ -144,7 +144,7 @@ public class PublicMsgActivity extends AppCompatActivity
         mAddressOutput = "";
 
 
-        fetchData();
+
 
 
         // use this setting to improve performance if you know that changes
@@ -332,6 +332,7 @@ public class PublicMsgActivity extends AppCompatActivity
 
         super.onStart();
         mGoogleApiClient.connect();
+        fetchData();
     }
 
     @Override
