@@ -14,6 +14,15 @@ import java.util.List;
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     private List<ItemData> itemDataList;
+    private Context mContext;
+
+
+    // Provide a suitable constructor (depends on the kind of dataset)
+    public ItemAdapter(List<ItemData> itemDataList) {
+
+        this.itemDataList = itemDataList;
+    }
+
 
     // Provide a reference to the views for each data item
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -28,10 +37,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
-    public ItemAdapter(List<ItemData> itemDataList) {
-        this.itemDataList = itemDataList;
-    }
+
 
     // Create new views (invoked by the layout manager)
     @Override

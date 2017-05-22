@@ -13,8 +13,7 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-import com.firebase.geofire.GeoFire;
-import com.firebase.geofire.GeoLocation;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -34,7 +33,6 @@ public class NewActivity extends AppCompatActivity {
 
     private double longitude;
     private double latitude;
-    private GeoFire geofire;
 
 
     String uid;

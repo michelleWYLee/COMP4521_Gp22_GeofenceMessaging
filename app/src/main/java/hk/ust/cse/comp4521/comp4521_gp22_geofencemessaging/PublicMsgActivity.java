@@ -38,16 +38,13 @@ import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
 
 
 public class PublicMsgActivity extends AppCompatActivity
@@ -74,6 +71,7 @@ public class PublicMsgActivity extends AppCompatActivity
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
 
+
     //fetch location
     protected GoogleApiClient mGoogleApiClient;
 
@@ -82,8 +80,8 @@ public class PublicMsgActivity extends AppCompatActivity
     protected Boolean mRequestingLocationUpdates;
     protected String mLastUpdateTime;
 
-    double latitude;
-    double longitude;
+    double latitude=0;
+    double longitude=0;
 
     protected boolean mAddressRequested;
 
@@ -137,6 +135,17 @@ public class PublicMsgActivity extends AppCompatActivity
                 }
             }
         };
+
+        mRequestingLocationUpdates = false;
+        mLastUpdateTime = "";
+
+        mResultReceiver = new AddressResultReceiver(new Handler());
+        mAddressRequested = false;
+        mAddressOutput = "";
+
+
+        fetchData();
+
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -246,18 +255,6 @@ public class PublicMsgActivity extends AppCompatActivity
         });
 
 
-
-
-        mRequestingLocationUpdates = false;
-        mLastUpdateTime = "";
-
-        mResultReceiver = new AddressResultReceiver(new Handler());
-        mAddressRequested = false;
-        mAddressOutput = "";
-
-        if(latitude != 0){
-            fetchData();
-        }
 
 
         updateValuesFromBundle(savedInstanceState);
@@ -434,7 +431,7 @@ public class PublicMsgActivity extends AppCompatActivity
                 "\nLast Updated = " + mLastUpdateTime);
         mLocationOutput = message;
         Log.i(TAG, message);
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         // We only start the service to fetch the address if GoogleApiClient is connected.
         if (mGoogleApiClient.isConnected() && mLastLocation != null) {
             startIntentService(mCurrentLocation);
@@ -517,7 +514,7 @@ public class PublicMsgActivity extends AppCompatActivity
 
             // Show a toast message if an address was found.
             if (resultCode == Constants.SUCCESS_RESULT) {
-                showToast(getString(R.string.address_found));
+                //showToast(getString(R.string.address_found));
             }
 
             // Reset. Enable the Fetch Address button and stop showing the progress bar.
@@ -545,7 +542,7 @@ public class PublicMsgActivity extends AppCompatActivity
     //TO-DO: get data from database
     private void fetchData(){
 
-       //set radius 500m
+        //set radius 500m
         Query query = new Query().setAroundLatLng(new LatLng(latitude,longitude)).setAroundRadius(500);
         client.getIndex("public_msg").searchAsync(query, new CompletionHandler() {
             @Override
@@ -554,6 +551,9 @@ public class PublicMsgActivity extends AppCompatActivity
                    //itemList
                    itemList = resultParser.parseResults(jsonObject);
                    Log.v(TAG,String.valueOf(itemList.size()));
+                   //mAdapter.notifyDataSetChanged();
+                   mRecyclerView.setAdapter(new ItemAdapter(itemList));
+                   mRecyclerView.invalidate();
                }
             }
         });
