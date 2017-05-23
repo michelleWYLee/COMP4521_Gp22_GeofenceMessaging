@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-
+//for recyclerviwer layout
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     private List<ItemData> itemDataList;

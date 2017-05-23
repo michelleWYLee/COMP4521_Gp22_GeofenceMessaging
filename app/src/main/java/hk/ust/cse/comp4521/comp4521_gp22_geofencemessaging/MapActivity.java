@@ -1,5 +1,6 @@
 package hk.ust.cse.comp4521.comp4521_gp22_geofencemessaging;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +16,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -49,14 +49,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         //SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-          //      .findFragmentById(R.id.map);
+        //      .findFragmentById(R.id.map);
         //mapFragment.getMapAsync(this);
 
         // We need to ensure that we get access to the map object. We need to wait
         // for the map object to be setup. This requires the implementation of an
         // async callback method onMapReady() where we get the reference to the map.
-        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapview);
-        mapFragment.getMapAsync(this);
+        setupMap();
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -166,7 +165,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         }
 
-       //TO-DO, Get data from fire base and add marker here
+        //TO-DO, Get data from fire base and add marker here
         mMap = googleMap;
 
 
@@ -204,5 +203,41 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
 
 
+    }
+
+
+    @Override
+    public void onStop() {
+
+        Fragment f = (Fragment) getFragmentManager().findFragmentById(R.id.mapview);
+        if (f != null) {
+            getFragmentManager().beginTransaction().remove(f).commit();
+        }
+
+        super.onStop();
+    }
+    @Override
+    public void onDestroy(){
+        Fragment f = (Fragment) getFragmentManager().findFragmentById(R.id.mapview);
+        if (f != null) {
+            getFragmentManager().beginTransaction().remove(f).commit();
+        }
+
+        super.onDestroy();
+
+    }
+
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupMap();
+    }
+
+
+    private void setupMap(){
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapview);
+        mapFragment.getMapAsync(this);
     }
 }

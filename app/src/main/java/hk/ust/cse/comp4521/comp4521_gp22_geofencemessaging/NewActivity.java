@@ -212,7 +212,6 @@ public class NewActivity extends AppCompatActivity {
 
     private void setupFirebase(){
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        //geofire = new GeoFire(mDatabase.child("geofire"));
     }
 
 
