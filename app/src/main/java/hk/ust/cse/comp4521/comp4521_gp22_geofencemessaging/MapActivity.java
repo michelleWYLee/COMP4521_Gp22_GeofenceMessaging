@@ -227,6 +227,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
+    @Override
+    public void onPause(){
+        Fragment f = (Fragment) getFragmentManager().findFragmentById(R.id.mapview);
+        if (f != null) {
+            getFragmentManager().beginTransaction().remove(f).commit();
+        }
+        super.onPause();
+    }
+
 
 
     @Override
