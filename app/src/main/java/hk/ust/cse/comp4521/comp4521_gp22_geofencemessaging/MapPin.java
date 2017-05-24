@@ -13,6 +13,10 @@ public class MapPin implements ClusterItem{
         mPosition = position;
     }
 
+    public String getTopic() {
+        return topic;
+    }
+
     @Override
     public LatLng getPosition() {
         return mPosition;

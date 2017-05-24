@@ -23,8 +23,8 @@ public class NewActivity extends AppCompatActivity {
 
     private ImageButton map,publicMsg,privateMsg,add,me;
 
-    private EditText inputSubject,inputMsg;
-    private RadioButton anonymous;
+    private EditText inputSubject,inputMsg,inputToUser;
+    private RadioButton anonymous,isPrivate;
     private Button share;
 
     private FirebaseAuth.AuthStateListener authListener;
@@ -153,6 +153,8 @@ public class NewActivity extends AppCompatActivity {
         inputMsg = (EditText) findViewById(R.id.msg);
         share = (Button) findViewById(R.id.send);
         anonymous = (RadioButton) findViewById(R.id.anonymous);
+        isPrivate = (RadioButton) findViewById(R.id.button_private);
+        inputToUser = (EditText) findViewById(R.id.send_to);
 
         //TO-DO: add to firebase
         share.setOnClickListener(new View.OnClickListener(){
@@ -160,6 +162,7 @@ public class NewActivity extends AppCompatActivity {
             public void onClick(View v){
                 String subject = inputSubject.getText().toString();
                 String message = inputMsg.getText().toString();
+                String getName = inputToUser.getText().toString();
 
                 //generate timestamp
                 Long tsLong = System.currentTimeMillis()/1000;
@@ -177,25 +180,44 @@ public class NewActivity extends AppCompatActivity {
                     return;
                 }
 
-                //if set the msg as anonymous
-                if(anonymous.isChecked()){
-                    username = "Anonymous";
+
+                if(isPrivate.isChecked()){
+                    String key = mDatabase.child("private").push().getKey();
+                    mDatabase.child("private").child(key).child("name").setValue(username);
+                    mDatabase.child("private").child(key).child("topic").setValue(subject);
+                    mDatabase.child("private").child(key).child("content").setValue(message);
+                   // mDatabase.child("private").child(key).child("longitude").setValue(latitude);
+                   // mDatabase.child("private").child(key).child("latitude").setValue(longitude);
+                    mDatabase.child("private").child(key).child("uid").setValue(uid);
+                    mDatabase.child("private").child(key).child("_tags").setValue(getName);
+                    mDatabase.child("private").child(key).child("_geoloc").child("lat").setValue(latitude);
+                    mDatabase.child("private").child(key).child("_geoloc").child("lng").setValue(longitude);
+
+                    Toast.makeText(getApplicationContext(), "Private Posted!", Toast.LENGTH_SHORT).show();
+
+
+                }else {
+
+
+                    //if set the msg as anonymous
+                    if (anonymous.isChecked()) {
+                        username = "Anonymous";
+                    }
+                    String key = mDatabase.child("public").push().getKey();
+                    mDatabase.child("public").child(key).child("name").setValue(username);
+                    mDatabase.child("public").child(key).child("topic").setValue(subject);
+                    mDatabase.child("public").child(key).child("content").setValue(message);
+                    mDatabase.child("public").child(key).child("longitude").setValue(latitude);
+                    mDatabase.child("public").child(key).child("latitude").setValue(longitude);
+                    mDatabase.child("public").child(key).child("uid").setValue(uid);
+                    mDatabase.child("public").child(key).child("_geoloc").child("lat").setValue(latitude);
+                    mDatabase.child("public").child(key).child("_geoloc").child("lng").setValue(longitude);
+
+                    Toast.makeText(getApplicationContext(), "Public Posted!", Toast.LENGTH_SHORT).show();
+
                 }
-                String key = mDatabase.child("public").push().getKey();
-                mDatabase.child("public").child(key).child("name").setValue(username);
-                mDatabase.child("public").child(key).child("topic").setValue(subject);
-                mDatabase.child("public").child(key).child("content").setValue(message);
-                mDatabase.child("public").child(key).child("longitude").setValue(latitude);
-                mDatabase.child("public").child(key).child("latitude").setValue(longitude);
-                mDatabase.child("public").child(key).child("uid").setValue(uid);
-                mDatabase.child("public").child(key).child("_geoloc").child("lat").setValue(latitude);
-                mDatabase.child("public").child(key).child("_geoloc").child("lng").setValue(longitude);
 
-                //TO-DO:location
-                //geofire.setLocation("",new GeoLocation(latitude,longitude));
 
-                //TO-DO: tell user successfully send and return to public msg
-                Toast.makeText(getApplicationContext(), "Posted!", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(NewActivity.this, PublicMsgActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
